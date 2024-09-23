@@ -31,6 +31,7 @@ app.get('/test', (req, res) => {
   });
 });
 
+// ROUTES
 app.use('/api', birthdayRoutes);
 
 const PORT = process.env.PORT || 5000;
