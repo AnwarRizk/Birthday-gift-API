@@ -13,7 +13,7 @@ router.get('/birthday/:id', async (req, res) => {
   try {
     const birthday = await Birthday.findOne({ uniqueId: req.params.id });
     if (!birthday) {
-      return res.status(404).send('Page not found');
+      return res.status(404).json({ error: 'Page not found' });
     }
     res.sendFile(path.join(__dirname, '../public/birthday.html'));
   } catch (err) {
