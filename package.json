@@ -1,12 +1,13 @@
 {
   "name": "birthday-gift",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "build": "echo 'No build step necessary' && exit 0",
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Anwar",
   "license": "ISC",
   "description": "",
   "dependencies": {
@@ -29,5 +30,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.36.1",
     "prettier": "^3.3.3"
+  },
+  "engines": {
+    "node": "18.17.0"
   }
 }
