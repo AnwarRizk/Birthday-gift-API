@@ -17,16 +17,19 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Test route
-app.get('/test', (req, res) => {
-  res.send('Test route');
-});
-
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {})
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.log(err));
+
+// Test route
+app.get('/test', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Test route working'
+  });
+});
 
 app.use('/api', birthdayRoutes);
 
