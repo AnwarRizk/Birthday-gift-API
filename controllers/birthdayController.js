@@ -53,7 +53,7 @@ const generateLink = async (req, res) => {
 
           // Return the generated link
           res.json({
-            link: `${req.protocol}://${req.get('host')}/birthday/${uniqueId}`
+            link: `${req.protocol}://${req.get('host')}/api/birthday/${uniqueId}`
           });
         }
       )

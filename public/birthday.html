@@ -11,7 +11,9 @@
         const id = queryParams.get('id');
 
         try {
-          const response = await fetch(`/api/birthday/${id}`);
+          const response = await fetch(
+            `http://birthday-gift-api.vercel.app/api/birthday/${id}`
+          );
           const data = await response.json();
           const { friendName, senderName, imageUrl } = data;
 
