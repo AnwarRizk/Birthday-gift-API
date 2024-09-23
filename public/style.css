@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Playpen+Sans:wght@500&family=Rubik+Wet+Paint&display=swap');
+
+body {
+    background-color: #d4c9bd;
+    font-family: Arial;
+    text-align: center;
+}
+
+#header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gift-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Playpen Sans', cursive;
+    color: #333333;
+    margin-top: 50px;
+    text-shadow: rgb(115, 235, 235) 1px 0 8px;
+}
+
+h1:hover {
+    text-shadow: rgb(211, 206, 63) 1px 0 8px;
+}
+
+.birthday-image {
+    width: 300px;
+    border-radius: 50%;
+    border-width: 10px;
+    border: #fed6a6 5px solid;
+}
+
+.birthday-image:hover {
+    width: 350px;
+    border: rgb(115, 235, 235) 5px solid;
+}
+
+.birthday-message {
+    font-family: 'Rubik Wet Paint';
+    font-size: 30px;
+    color: #000000;
+    text-shadow: rgb(39, 255, 28) 1px 0 5px;
+}
+
+.gift-img {
+    width: 400px;
+    height: 400px;
+    border: 5px solid #484646;
+    border-radius: 10px;
+    background-image: url("images/special-gift.avif");
+    background-size: cover;
+}
+
+#happy:hover {
+    background-image: url("images/happy.gif");
+    border: 7px solid #9c9c9c;
+    border-radius: 30px;
+}
+
+#people-react:hover {
+    background-image: url("images/tom-love.gif");
+    border: 7px solid #c42424;
+    border-radius: 30px;
+}
+
+#awesome:hover {
+    background-image: url("images/awesome.gif");
+    border: 7px solid #eb7542;
+    border-radius: 30px;
+}
+
+.best-wishes {
+    width: 400px;
+    height: 400px;
+    border: 5px solid #484646;
+    border-radius: 10px;
+    background-color: rgb(44, 44, 44);
+    background-size: cover;
+}
+
+.wishing-text {
+    margin: 40px 10px 20px 10px;
+    font-family: 'Creepster', cursive;
+    font-size: 35px;
+    color: #e4e1e1;
+    text-shadow: rgb(17, 18, 18) 1px 0 5px;
+}
+
+#wishing:hover {
+    background: linear-gradient(to right,teal, #222325);
+    border: 7px solid #19cbd4;
+    border-radius: 30px;
+}
+
+.copyright {
+    margin-top: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    color: #000000;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: underline;
+    color: #434344fc;
+}
+
+@media screen and (max-width: 420px) {
+    .gift-img {
+        width: 340px;
+    }
+    .best-wishes {
+        width: 340px;
+    }
+}
