@@ -1,6 +1,7 @@
 const express = require('express');
 const { upload, generateLink } = require('../controllers/birthdayController');
 const Birthday = require('../models/birthdayModel');
+const path = require('path');
 const router = express.Router();
 
 router.post('/generate', upload.single('friendImage'), generateLink);
