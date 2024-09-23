@@ -5,6 +5,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1 id="todayMessage" class="today-message"></h1>
+      <img
+        src=""
+        id="birthdayImage"
+        class="birthday-image"
+        alt="Friend's image"
+      />
+      <p id="birthdayMessage" class="birthday-message"></p>
+    </div>
+
+    <div class="gift-section">
+      <h2>Here's how happy I am for you today 🤩</h2>
+      <figure id="happy" class="gift-img"></figure>
+    </div>
+
+    <div class="gift-section">
+      <h2>How people react when you enter a place 🤯</h2>
+      <figure id="people-react" class="gift-img"></figure>
+    </div>
+
+    <div class="gift-section">
+      <h2>If I had to describe you with ONE word 👇</h2>
+      <figure id="awesome" class="gift-img"></figure>
+    </div>
+
+    <div class="gift-section">
+      <h2>Finally...</h2>
+      <div id="wishing" class="best-wishes">
+        <p class="wishing-text" id="wishingText"></p>
+      </div>
+    </div>
+
+    <footer class="copyright">
+      <p>
+        &copy; 2023 -
+        <a href="https://anwar-rizk.netlify.app/" target="_blank">Anwar Rizk</a>
+      </p>
+    </footer>
+
     <script>
       window.onload = async function () {
         // Extract the ID from the URL path
@@ -48,46 +90,5 @@
         }
       };
     </script>
-  </head>
-  <body>
-    <div id="header">
-      <h1 id="todayMessage" class="today-message"></h1>
-      <img
-        src=""
-        id="birthdayImage"
-        class="birthday-image"
-        alt="Friend's image"
-      />
-      <p id="birthdayMessage" class="birthday-message"></p>
-    </div>
-
-    <div class="gift-section">
-      <h2>Here's how happy I am for you today 🤩</h2>
-      <figure id="happy" class="gift-img"></figure>
-    </div>
-
-    <div class="gift-section">
-      <h2>How people react when you enter a place 🤯</h2>
-      <figure id="people-react" class="gift-img"></figure>
-    </div>
-
-    <div class="gift-section">
-      <h2>If I had to describe you with ONE word 👇</h2>
-      <figure id="awesome" class="gift-img"></figure>
-    </div>
-
-    <div class="gift-section">
-      <h2>Finally...</h2>
-      <div id="wishing" class="best-wishes">
-        <p class="wishing-text" id="wishingText"></p>
-      </div>
-    </div>
-
-    <footer class="copyright">
-      <p>
-        &copy; 2023 -
-        <a href="https://anwar-rizk.netlify.app/" target="_blank">Anwar Rizk</a>
-      </p>
-    </footer>
   </body>
 </html>
