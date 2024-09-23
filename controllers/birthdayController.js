@@ -31,7 +31,7 @@ const generateLink = async (req, res) => {
       .upload_stream(
         {
           folder: 'birthday',
-          transformation: [{ width: 500, height: 500, crop: 'limit' }],
+          transformation: [{ width: 600, height: 600, crop: 'limit' }],
           public_id: uuidv4()
         },
         async (error, result) => {
