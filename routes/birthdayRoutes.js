@@ -8,15 +8,13 @@ const router = express.Router();
 router.post('/generate', upload.single('friendImage'), generateLink);
 
 router.get('/birthday/:id', async (req, res) => {
-  try {
-    const birthday = await Birthday.findOne({ uniqueId: req.params.id });
-    if (!birthday) {
-      return res.status(404).json({ error: 'Page not found' });
-    }
-    res.sendFile(path.join(__dirname, '../public/birthday.html'));
-  } catch (err) {
-    res.status(500).send(err.message);
+  // Find the birthday data in MongoDB and send json response
+  const birthday = await Birthday.findOne({ uniqueId: req.params.id });
+  if (!birthday) {
+    return res.status(404).send('Birthday data not found!');
   }
+
+  res.json(birthday);
 });
 
 module.exports = router;
