@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Birthday Gift</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background-color: #d4c9bd;
+        font-size: 20px;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333333;
+        margin-top: 50px;
+      }
+
+      .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background-color: #ccb69f;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        align-items: center;
+      }
+
+      label {
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      input[type='text'],
+      input[type='file'] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #303030;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      #generatedLinkContainer {
+        display: none;
+        margin-top: 20px;
+      }
+
+      #generatedLink {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #303030;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        display: inline-block;
+        background-color: #4caf50;
+        color: #ffffff;
+        margin-top: 20px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+      }
+
+      .copyright {
+        margin-top: 50px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+        color: #000000;
+        font-weight: bold;
+      }
+
+      a {
+        text-decoration: underline;
+        color: #434344fc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Birthday Gift 🙈</h1>
+
+    <form class="form-container" id="birthdayForm">
+      <label for="friendName">Enter your friend's name:</label>
+      <input
+        type="text"
+        name="friendName"
+        id="friendName"
+        placeholder="Your friend's name"
+        required
+      />
+
+      <label for="friendImage">Upload your friend's image:</label>
+      <input type="file" name="friendImage" id="friendImage" required />
+
+      <label for="senderName">Enter your name:</label>
+      <input
+        type="text"
+        name="senderName"
+        id="senderName"
+        placeholder="Your name"
+        required
+      />
+
+      <button type="submit">Generate Link</button>
+
+      <div id="generatedLinkContainer">
+        <input type="text" id="generatedLink" readonly />
+        <div class="button-group">
+          <button id="copyLinkButton">Copy Link</button>
+          <button id="visitLinkButton">Visit</button>
+        </div>
+      </div>
+    </form>
+
+    <footer class="copyright">
+      <p>
+        &copy; 2023 -
+        <a href="https://anwar-rizk.netlify.app/" target="_blank">Anwar Rizk</a>
+      </p>
+    </footer>
+
+    <script>
+      document
+        .getElementById('birthdayForm')
+        .addEventListener('submit', async function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch('/api/generate', {
+              method: 'POST',
+              body: formData
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              const link = data.link;
+
+              // Display the generated link
+              const linkContainer = document.getElementById(
+                'generatedLinkContainer'
+              );
+              const linkInput = document.getElementById('generatedLink');
+              linkContainer.style.display = 'block';
+              linkInput.value = link;
+
+              // Add event listeners for buttons
+              document
+                .getElementById('copyLinkButton')
+                .addEventListener('click', function () {
+                  linkInput.select();
+                  document.execCommand('copy');
+                  alert('Link copied to clipboard!');
+                });
+
+              document
+                .getElementById('visitLinkButton')
+                .addEventListener('click', function () {
+                  window.open(link, '_blank');
+                });
+            } else {
+              alert('Failed to generate link. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while generating the link.');
+          }
+        });
+    </script>
+  </body>
+</html>
