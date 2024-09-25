@@ -11,10 +11,16 @@ router.get('/birthday/:id', async (req, res) => {
   // Find the birthday data in MongoDB and send json response
   const birthday = await Birthday.findOne({ uniqueId: req.params.id });
   if (!birthday) {
-    return res.status(404).send('Birthday data not found!');
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Birthday data not found'
+    });
   }
 
-  res.json(birthday);
+  res.status(200).json({
+    status: 'success',
+    data: birthday
+  });
 });
 
 module.exports = router;

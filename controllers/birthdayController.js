@@ -17,11 +17,11 @@ const upload = multer({ storage });
 
 // Generate link and handle image upload
 const generateLink = async (req, res) => {
-  const { friendName, senderName } = req.body;
+  const { friendName, senderName, message } = req.body;
   const image = req.file;
 
   // Ensure all fields are provided
-  if (!friendName || !senderName || !image) {
+  if (!friendName || !senderName || !message || !image) {
     return res.status(400).send('All fields are required!');
   }
 
@@ -44,6 +44,7 @@ const generateLink = async (req, res) => {
           const birthday = new Birthday({
             friendName,
             senderName,
+            message,
             imageUrl: result.secure_url,
             uniqueId
           });
