@@ -15,6 +15,26 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Function to handle Cloudinary image upload
+const uploadImageToCloudinary = (imageBuffer) =>
+  new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream(
+        {
+          folder: 'birthday',
+          transformation: [{ width: 600, height: 600, crop: 'limit' }],
+          public_id: uuidv4() // Assign unique ID to the image
+        },
+        (error, result) => {
+          if (error) {
+            return reject(new Error('Cloudinary upload failed.'));
+          }
+          resolve(result);
+        }
+      )
+      .end(imageBuffer);
+  });
+
 // Generate link and handle image upload
 const generateLink = async (req, res) => {
   const { friendName, senderName, message } = req.body;
@@ -26,41 +46,29 @@ const generateLink = async (req, res) => {
   }
 
   try {
-    // Upload and resize the image to Cloudinary using the image buffer
-    cloudinary.uploader
-      .upload_stream(
-        {
-          folder: 'birthday',
-          transformation: [{ width: 600, height: 600, crop: 'limit' }],
-          public_id: uuidv4()
-        },
-        async (error, result) => {
-          if (error) {
-            return res.status(500).send('Cloudinary upload failed.');
-          }
+    // Upload the image to Cloudinary
+    const result = await uploadImageToCloudinary(image.buffer);
 
-          // Save the details in MongoDB
-          const uniqueId = uuidv4(); // Generate a unique ID for the link
-          const birthday = new Birthday({
-            friendName,
-            senderName,
-            message,
-            imageUrl: result.secure_url,
-            uniqueId
-          });
+    // Save the details in MongoDB
+    const uniqueId = uuidv4(); // Generate a unique ID for the link
+    const birthday = new Birthday({
+      friendName,
+      senderName,
+      message,
+      imageUrl: result.secure_url, // Store Cloudinary image URL
+      uniqueId
+    });
 
-          // Save the birthday data to the database
-          await birthday.save();
+    // Save the birthday data to the database
+    await birthday.save();
 
-          // Return the generated link
-          res.json({
-            link: `https://friend-birthday-gift.vercel.app/birthday.html?id=${uniqueId}`
-          });
-        }
-      )
-      .end(image.buffer); // Use image buffer instead of streaming
+    // Return the generated link
+    res.json({
+      link: `https://friend-birthday-gift.vercel.app/birthday.html?id=${uniqueId}`
+    });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error(err.message);
+    res.status(500).send('An error occurred while generating the link.');
   }
 };
 
