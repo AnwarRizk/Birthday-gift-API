@@ -54,7 +54,7 @@ const generateLink = async (req, res) => {
 
           // Return the generated link
           res.json({
-            link: `https://birthday-gift-front.vercel.app/birthday.html?id=${uniqueId}`
+            link: `https://friend-birthday-gift.vercel.app/birthday.html?id=${uniqueId}`
           });
         }
       )
