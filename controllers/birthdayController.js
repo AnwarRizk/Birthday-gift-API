@@ -22,11 +22,7 @@ const uploadImageToCloudinary = (imageBuffer) =>
       .upload_stream(
         {
           folder: 'birthday',
-          transformation: [
-            { width: 600, height: 600, crop: 'limit' },
-            { fetch_format: 'auto', quality: 'auto' } // Automatically convert format and optimize quality
-          ],
-          format: 'jpg', // Ensure the output is always JPG
+          transformation: [{ width: 600, height: 600, crop: 'limit' }],
           public_id: uuidv4() // Assign unique ID to the image
         },
         (error, result) => {
