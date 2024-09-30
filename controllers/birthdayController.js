@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
-const sharp = require('sharp');
 const Birthday = require('../models/birthdayModel');
 require('dotenv').config();
 
@@ -16,14 +15,18 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Function to handle Cloudinary image upload
+// Function to handle Cloudinary image upload with format conversion
 const uploadImageToCloudinary = (imageBuffer) =>
   new Promise((resolve, reject) => {
     cloudinary.uploader
       .upload_stream(
         {
           folder: 'birthday',
-          transformation: [{ width: 600, height: 600, crop: 'limit' }],
+          transformation: [
+            { width: 600, height: 600, crop: 'limit' },
+            { fetch_format: 'auto', quality: 'auto' } // Automatically convert format and optimize quality
+          ],
+          format: 'jpg', // Ensure the output is always JPG
           public_id: uuidv4() // Assign unique ID to the image
         },
         (error, result) => {
@@ -35,18 +38,6 @@ const uploadImageToCloudinary = (imageBuffer) =>
       )
       .end(imageBuffer);
   });
-
-// Helper function to convert HEIC to JPEG using sharp
-const convertHEICtoJPEG = async (buffer) => {
-  try {
-    const convertedImageBuffer = await sharp(buffer)
-      .toFormat('jpeg')
-      .toBuffer();
-    return convertedImageBuffer;
-  } catch (error) {
-    throw new Error('Failed to convert HEIC image.');
-  }
-};
 
 // Generate link and handle image upload
 const generateLink = async (req, res) => {
@@ -62,15 +53,9 @@ const generateLink = async (req, res) => {
     let imageUrl = null;
 
     if (image) {
-      let imageBuffer = image.buffer;
+      const imageBuffer = image.buffer;
 
-      // Check if the uploaded image is HEIC format
-      if (image.mimetype === 'image/heic') {
-        // Convert HEIC to JPEG
-        imageBuffer = await convertHEICtoJPEG(imageBuffer);
-      }
-
-      // Upload the image to Cloudinary
+      // Upload the image to Cloudinary with format conversion
       const result = await uploadImageToCloudinary(imageBuffer);
       imageUrl = result.secure_url; // Store Cloudinary image URL
     }
