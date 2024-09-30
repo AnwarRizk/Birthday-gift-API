@@ -2,7 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
+const cron = require('node-cron'); // Import node-cron for scheduling tasks
 const birthdayRoutes = require('./routes/birthdayRoutes');
+const {
+  deleteOldBirthdaysAndImagesFromCloudinary
+} = require('./utils/cleanup'); // Import cleanup utility
 require('dotenv').config();
 
 const app = express();
@@ -45,5 +49,26 @@ app.use((err, req, res, next) => {
   });
 });
 
+/* 
+*    *    *    *    *
+|    |    |    |    |
+|    |    |    |    └── Day of the Week (0 - 7) (0 or 7 is Sunday)
+|    |    |    └────── Month (1 - 12)
+|    |    └──────────── Day of the Month (1 - 31)
+|    └────────────────── Hour (0 - 23)
+└──────────────────────── Minute (0 - 59)
+*/
+
+// Schedule the deletion of old images every day at 2 AM and 2 PM
+cron.schedule('* 2,14 * * *', async () => {
+  try {
+    await deleteOldBirthdaysAndImagesFromCloudinary();
+    console.log('Old images deleted successfully');
+  } catch (err) {
+    console.error('Error deleting old images:', err);
+  }
+});
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

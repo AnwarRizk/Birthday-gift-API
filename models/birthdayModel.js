@@ -11,8 +11,7 @@ const birthdaySchema = new mongoose.Schema(
       required: [true, 'Please provide your name']
     },
     imageUrl: {
-      type: String,
-      required: [true, 'Please provide the image URL']
+      type: String
     },
     message: {
       type: String,

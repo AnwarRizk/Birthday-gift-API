@@ -1,6 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
 const Birthday = require('../models/birthdayModel');
 require('dotenv').config();
 
@@ -35,19 +36,44 @@ const uploadImageToCloudinary = (imageBuffer) =>
       .end(imageBuffer);
   });
 
+// Helper function to convert HEIC to JPEG using sharp
+const convertHEICtoJPEG = async (buffer) => {
+  try {
+    const convertedImageBuffer = await sharp(buffer)
+      .toFormat('jpeg')
+      .toBuffer();
+    return convertedImageBuffer;
+  } catch (error) {
+    throw new Error('Failed to convert HEIC image.');
+  }
+};
+
 // Generate link and handle image upload
 const generateLink = async (req, res) => {
   const { friendName, senderName, message } = req.body;
   const image = req.file;
 
-  // Ensure all fields are provided
-  if (!friendName || !senderName || !message || !image) {
-    return res.status(400).send('All fields are required!');
+  // Ensure all fields are provided except image
+  if (!friendName || !senderName || !message) {
+    return res.status(400).send('All required fields are missing!');
   }
 
   try {
-    // Upload the image to Cloudinary
-    const result = await uploadImageToCloudinary(image.buffer);
+    let imageUrl = null;
+
+    if (image) {
+      let imageBuffer = image.buffer;
+
+      // Check if the uploaded image is HEIC format
+      if (image.mimetype === 'image/heic') {
+        // Convert HEIC to JPEG
+        imageBuffer = await convertHEICtoJPEG(imageBuffer);
+      }
+
+      // Upload the image to Cloudinary
+      const result = await uploadImageToCloudinary(imageBuffer);
+      imageUrl = result.secure_url; // Store Cloudinary image URL
+    }
 
     // Save the details in MongoDB
     const uniqueId = uuidv4(); // Generate a unique ID for the link
@@ -55,7 +81,7 @@ const generateLink = async (req, res) => {
       friendName,
       senderName,
       message,
-      imageUrl: result.secure_url, // Store Cloudinary image URL
+      imageUrl, // Save image URL if it exists, otherwise null
       uniqueId
     });
 
